@@ -59,11 +59,20 @@ const CARD_COLORS = [
 
 export default function LibraryPage() {
   const [patterns, setPatterns] = useState([]);
+  const [localPatterns, setLocalPatterns] = useState([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Load local patterns from localStorage
+    try {
+      const local = JSON.parse(localStorage.getItem('soundforge_local_patterns') || '[]');
+      setLocalPatterns(local);
+    } catch (err) {
+      console.error('Failed to load local patterns:', err);
+    }
+
     const fetchPatterns = async () => {
       try {
         const res = await fetch(`${API_URL}/api/patterns`);
@@ -80,7 +89,7 @@ export default function LibraryPage() {
     fetchPatterns();
   }, []);
 
-  const allPatterns = [...PRESET_PATTERNS, ...patterns];
+  const allPatterns = [...PRESET_PATTERNS, ...localPatterns, ...patterns];
   const filtered = allPatterns.filter((p) =>
     p.title.toLowerCase().includes(search.toLowerCase()) ||
     p.author.toLowerCase().includes(search.toLowerCase())
@@ -378,6 +387,18 @@ export default function LibraryPage() {
                               color: 'var(--neon-pink)',
                               letterSpacing: '1px',
                             }}>PRESET</span>
+                          )}
+                          {pattern.isLocal && (
+                            <span style={{
+                              padding: '3px 8px',
+                              background: 'rgba(57,255,20,0.15)',
+                              border: '1px solid rgba(57,255,20,0.3)',
+                              borderRadius: '6px',
+                              fontSize: '0.6rem',
+                              fontWeight: 700,
+                              color: 'var(--neon-green)',
+                              letterSpacing: '1px',
+                            }}>LOCAL</span>
                           )}
                           <span style={{
                             padding: '3px 8px',

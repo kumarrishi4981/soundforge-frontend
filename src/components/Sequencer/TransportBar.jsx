@@ -1,4 +1,4 @@
-export default function TransportBar({ isPlaying, bpm, onPlay, onStop, onBpmChange, onClear, currentStep }) {
+export default function TransportBar({ isPlaying, bpm, onPlay, onStop, onBpmChange, onClear, onSave, currentStep }) {
   return (
     <div className="transport-bar">
       {/* Play / Stop / Clear */}
@@ -28,6 +28,27 @@ export default function TransportBar({ isPlaying, bpm, onPlay, onStop, onBpmChan
           aria-label="Clear grid"
         >
           🗑
+        </button>
+
+        <button
+          className="transport-btn save-btn"
+          onClick={onSave}
+          title="Save pattern"
+          aria-label="Save pattern"
+          style={{
+            borderColor: 'var(--neon-green)',
+            color: 'var(--neon-green)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.boxShadow = 'var(--glow-green)';
+            e.currentTarget.style.background = 'rgba(57, 255, 20, 0.08)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = 'none';
+            e.currentTarget.style.background = 'var(--bg-elevated)';
+          }}
+        >
+          💾
         </button>
       </div>
 

@@ -13,6 +13,7 @@ import RoomJoin from '../components/Room/RoomJoin';
 import UserPresence from '../components/Room/UserPresence';
 import { PRESET_PATTERNS } from '../data/presets';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 const createEmptyGrid = () => Array.from({ length: 16 }, () => Array(16).fill(false));
 
 export default function StudioPage() {
@@ -305,6 +306,59 @@ export default function StudioPage() {
     });
   };
 
+  /* ── Save Pattern ────────────────────────────────────────────────────── */
+  const handleSavePattern = async () => {
+    const title = prompt("Enter a title for your pattern:", "My Custom Beat");
+    if (!title || !title.trim()) return;
+
+    const patternData = {
+      title: title.trim(),
+      author: username || 'Anonymous',
+      grid: grid,
+      bpm: bpm,
+      waveform: waveform,
+      synthConfig: {
+        envelope: envelope,
+        filterType: filterType,
+        filterFreq: filterFreq,
+        filterQ: filterQ,
+      },
+      effects: effects,
+    };
+
+    try {
+      const res = await fetch(`${API_URL}/api/patterns`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(patternData),
+      });
+
+      if (res.ok) {
+        alert(`🎉 Pattern "${title}" successfully saved to the cloud library!`);
+        return;
+      }
+      throw new Error('Database server offline or failed to save');
+    } catch (err) {
+      console.warn('Backend save failed, falling back to local storage:', err.message);
+      
+      try {
+        const local = JSON.parse(localStorage.getItem('soundforge_local_patterns') || '[]');
+        const newPattern = {
+          ...patternData,
+          _id: `local-${Date.now()}`,
+          isLocal: true,
+          createdAt: new Date().toISOString(),
+        };
+        local.push(newPattern);
+        localStorage.setItem('soundforge_local_patterns', JSON.stringify(local));
+        alert(`💾 Saved locally! Pattern "${title}" successfully stored in your browser's local storage.`);
+      } catch (storageErr) {
+        console.error('Local storage save failed:', storageErr);
+        alert('❌ Failed to save pattern both to the cloud and locally.');
+      }
+    }
+  };
+
   /* ── Grid Toggle ─────────────────────────────────────────────────────── */
   const handleToggleCell = (row, col) => {
     setGrid((prev) => {
@@ -511,6 +565,7 @@ export default function StudioPage() {
             onStop={handleStop}
             onBpmChange={handleBpmChange}
             onClear={handleClear}
+            onSave={handleSavePattern}
           />
         </div>
 
