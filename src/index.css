@@ -696,6 +696,13 @@ input[type="range"]::-moz-range-thumb {
   color: var(--neon-red);
 }
 
+.transport-btn.save-btn:hover {
+  border-color: var(--neon-green);
+  color: var(--neon-green);
+  box-shadow: var(--glow-green);
+  background: rgba(57, 255, 20, 0.08);
+}
+
 .bpm-section {
   display: flex;
   align-items: center;

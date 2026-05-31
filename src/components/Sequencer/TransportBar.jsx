@@ -35,18 +35,6 @@ export default function TransportBar({ isPlaying, bpm, onPlay, onStop, onBpmChan
           onClick={onSave}
           title="Save pattern"
           aria-label="Save pattern"
-          style={{
-            borderColor: 'var(--neon-green)',
-            color: 'var(--neon-green)',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.boxShadow = 'var(--glow-green)';
-            e.currentTarget.style.background = 'rgba(57, 255, 20, 0.08)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.boxShadow = 'none';
-            e.currentTarget.style.background = 'var(--bg-elevated)';
-          }}
         >
           💾
         </button>
