@@ -89,6 +89,38 @@ export default function LibraryPage() {
     fetchPatterns();
   }, []);
 
+  const handleDelete = async (e, pattern) => {
+    e.stopPropagation(); // Prevent navigating to studio
+    const confirmDelete = window.confirm(`Are you sure you want to delete "${pattern.title}"?`);
+    if (!confirmDelete) return;
+
+    if (pattern.isLocal) {
+      try {
+        const local = JSON.parse(localStorage.getItem('soundforge_local_patterns') || '[]');
+        const updated = local.filter((p) => p._id !== pattern._id);
+        localStorage.setItem('soundforge_local_patterns', JSON.stringify(updated));
+        setLocalPatterns(updated);
+      } catch (err) {
+        console.error('Failed to delete local pattern:', err);
+      }
+    } else {
+      try {
+        const res = await fetch(`${API_URL}/api/patterns/${pattern._id}`, {
+          method: 'DELETE',
+        });
+        if (res.ok) {
+          setPatterns(patterns.filter((p) => p._id !== pattern._id));
+        } else {
+          const data = await res.json();
+          alert(data.error || 'Failed to delete pattern from cloud.');
+        }
+      } catch (err) {
+        console.error('Failed to delete cloud pattern:', err);
+        alert('Failed to connect to backend server for deletion.');
+      }
+    }
+  };
+
   const allPatterns = [...PRESET_PATTERNS, ...localPatterns, ...patterns];
   const filtered = allPatterns.filter((p) =>
     p.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -331,6 +363,7 @@ export default function LibraryPage() {
                       cursor: 'pointer',
                       animation: `slide-in 0.4s ease backwards`,
                       animationDelay: `${i * 0.06}s`,
+                      position: 'relative',
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.transform = 'translateY(-5px)';
@@ -349,6 +382,44 @@ export default function LibraryPage() {
                         <div style={{ marginBottom: '16px' }}>
                           <GridPreview grid={pattern.grid} />
                         </div>
+                      )}
+
+                      {/* Delete Button (Only for custom user patterns, not system presets) */}
+                      {!pattern.isPreset && (
+                        <button
+                          title="Delete pattern"
+                          onClick={(e) => handleDelete(e, pattern)}
+                          style={{
+                            position: 'absolute',
+                            top: '12px',
+                            right: '12px',
+                            width: '28px',
+                            height: '28px',
+                            borderRadius: '50%',
+                            border: '1px solid rgba(255, 71, 87, 0.25)',
+                            background: 'rgba(255, 71, 87, 0.06)',
+                            color: 'var(--neon-red)',
+                            fontSize: '0.85rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease',
+                            zIndex: 10,
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'rgba(255, 71, 87, 0.2)';
+                            e.currentTarget.style.boxShadow = '0 0 10px rgba(255, 71, 87, 0.4)';
+                            e.currentTarget.style.transform = 'scale(1.1)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'rgba(255, 71, 87, 0.06)';
+                            e.currentTarget.style.boxShadow = 'none';
+                            e.currentTarget.style.transform = 'scale(1)';
+                          }}
+                        >
+                          🗑️
+                        </button>
                       )}
 
                       {/* Info */}
