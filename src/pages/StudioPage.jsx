@@ -459,18 +459,11 @@ export default function StudioPage() {
       {/* Header */}
       <header className="header">
         <div className="header-logo">SOUNDFORGE</div>
-        <div className="header-center" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <div className="header-center">
           <span className="room-code">🔗 {roomCode}</span>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{
-              fontSize: '0.65rem',
-              fontWeight: 700,
-              color: 'var(--text-muted)',
-              fontFamily: "'Orbitron', sans-serif",
-              letterSpacing: '1px',
-              textTransform: 'uppercase'
-            }}>Preset:</span>
+          <div className="preset-select-container">
+            <span className="preset-label">Preset:</span>
             <select
               defaultValue=""
               onChange={(e) => {
@@ -482,32 +475,7 @@ export default function StudioPage() {
                 }
                 e.target.value = ''; // Reset select after loading
               }}
-              style={{
-                background: 'rgba(26, 26, 62, 0.8)',
-                border: '1.5px solid rgba(180, 77, 255, 0.25)',
-                borderRadius: '8px',
-                color: 'var(--neon-cyan)',
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontSize: '0.78rem',
-                fontWeight: 600,
-                padding: '6px 28px 6px 12px',
-                outline: 'none',
-                cursor: 'pointer',
-                transition: 'all 0.3s',
-                appearance: 'none',
-                backgroundImage: 'url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2300f0ff%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E")',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'calc(100% - 10px) center',
-                boxShadow: '0 0 10px rgba(180, 77, 255, 0.05)',
-              }}
-              onFocus={(e) => {
-                e.target.style.borderColor = 'var(--neon-cyan)';
-                e.target.style.boxShadow = '0 0 15px rgba(0, 240, 255, 0.15)';
-              }}
-              onBlur={(e) => {
-                e.target.style.borderColor = 'rgba(180, 77, 255, 0.25)';
-                e.target.style.boxShadow = 'none';
-              }}
+              className="preset-select"
             >
               <option value="" disabled>-- Select Preset --</option>
               {PRESET_PATTERNS.map((p) => (

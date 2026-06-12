@@ -134,36 +134,15 @@ export default function LibraryPage() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
       {/* Header */}
-      <header style={{
-        position: 'sticky', top: 0, zIndex: 100,
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '12px 24px',
-        background: 'rgba(10,10,26,0.92)',
-        backdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(180,77,255,0.12)',
-      }}>
-        <Link to="/" style={{
-          fontFamily: "'Orbitron', sans-serif", fontWeight: 900, fontSize: '1.1rem',
-          background: 'linear-gradient(135deg, var(--neon-pink), var(--neon-cyan))',
-          WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text', textDecoration: 'none', letterSpacing: '2px',
-        }}>SOUNDFORGE</Link>
+      <header className="header">
+        <Link to="/" className="header-logo" style={{ textDecoration: 'none' }}>SOUNDFORGE</Link>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div className="header-center">
           <EqBars count={4} color="var(--neon-purple)" />
           <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 500 }}>Sound Library</span>
         </div>
 
-        <Link to="/studio" style={{
-          padding: '8px 20px',
-          background: 'linear-gradient(135deg, var(--neon-pink), var(--neon-purple))',
-          border: 'none', borderRadius: '8px',
-          color: '#fff', textDecoration: 'none',
-          fontFamily: "'Space Grotesk', sans-serif",
-          fontWeight: 600, fontSize: '0.82rem', letterSpacing: '0.5px',
-          boxShadow: '0 0 12px rgba(255,45,149,0.25)',
-          transition: 'all 0.3s',
-        }}>🎹 Open Studio</Link>
+        <Link to="/studio" className="btn-primary" style={{ padding: '8px 16px', fontSize: '0.78rem' }}>🎹 Open Studio</Link>
       </header>
 
       {/* Hero Banner */}

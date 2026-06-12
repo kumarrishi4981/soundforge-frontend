@@ -57,7 +57,11 @@
 
 /* ── Reset ─────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
 
 body {
   font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -65,6 +69,7 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   min-height: 100vh;
+  max-width: 100vw;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
@@ -272,6 +277,45 @@ body {
   gap: var(--space-md);
 }
 
+.preset-select-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.preset-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.preset-select {
+  background: rgba(26, 26, 62, 0.8);
+  border: 1.5px solid rgba(180, 77, 255, 0.25);
+  border-radius: 8px;
+  color: var(--neon-cyan);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 28px 6px 12px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2300f0ff%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: calc(100% - 10px) center;
+  box-shadow: 0 0 10px rgba(180, 77, 255, 0.05);
+}
+
+.preset-select:focus {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+}
+
 /* ── Studio Layout ─────────────────────────────────────────────────────── */
 .studio-layout {
   flex: 1;
@@ -323,6 +367,8 @@ body {
   flex-direction: column;
   gap: var(--space-xs);
   margin-top: 16px;
+  width: 100%;
+  max-width: 720px;
 }
 
 .sequencer-column-numbers {
@@ -1168,19 +1214,33 @@ input[type="range"]::-moz-range-thumb {
     grid-template-rows: auto auto auto auto;
     max-height: none;
     overflow-y: auto;
+    padding: var(--space-sm);
+    gap: var(--space-md);
+  }
+
+  .studio-main {
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: var(--space-md) var(--space-xs);
+    justify-content: flex-start;
+  }
+
+  .sequencer-wrapper {
+    margin: 0 auto;
+    min-width: 390px;
   }
 
   .studio-sidebar {
     grid-column: 1;
     grid-row: auto;
-    flex-direction: row;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-md);
     overflow-y: visible;
-  }
-
-  .studio-sidebar .control-panel {
-    flex: 1 1 200px;
-    min-width: 200px;
+    padding-right: 0;
   }
 
   .studio-visualizers {
@@ -1201,5 +1261,64 @@ input[type="range"]::-moz-range-thumb {
   .landing-ctas {
     flex-direction: column;
     align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .header-logo {
+    order: 1;
+  }
+
+  .header-right {
+    order: 2;
+    margin-left: auto;
+  }
+
+  .header-center {
+    order: 3;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(180, 77, 255, 0.1);
+    padding-top: var(--space-sm);
+    margin-top: var(--space-xs);
+  }
+}
+
+@media (max-width: 480px) {
+  .header-center {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .header-center > .room-code {
+    width: 100%;
+    text-align: left;
+  }
+
+  .preset-select-container {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .grid-cell {
+    min-width: 18px;
+    min-height: 18px;
+  }
+
+  .col-number {
+    font-size: 0.6rem;
+  }
+
+  .sequencer-wrapper {
+    min-width: 340px;
   }
 }
