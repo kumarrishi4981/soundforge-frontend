@@ -333,8 +333,6 @@ body {
   grid-row: 1;
   overflow: auto;
   display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 40px var(--space-md);
 }
 
@@ -366,7 +364,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
-  margin-top: 16px;
+  margin: auto;
   width: 100%;
   max-width: 720px;
 }
@@ -1229,7 +1227,7 @@ input[type="range"]::-moz-range-thumb {
   }
 
   .sequencer-wrapper {
-    margin: 0 auto;
+    margin: var(--space-md) auto;
     min-width: 390px;
   }
 
