@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ServerStatusBanner from './components/ServerStatusBanner';
 
 // Pages - lazy load to prevent loading large Tone.js audio engine logic on the landing page
 const LandingPage = lazy(() => import('./pages/LandingPage'));
@@ -9,6 +10,7 @@ const LibraryPage = lazy(() => import('./pages/LibraryPage'));
 export default function App() {
   return (
     <BrowserRouter>
+      <ServerStatusBanner />
       <Suspense fallback={
         <div style={{
           display: 'flex',
